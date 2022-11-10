@@ -471,25 +471,25 @@ class DeepBoothTrainer:
                 with open(os.path.join(save_dir, "args.json"), "w") as f:
                     json.dump(args.__dict__, f, indent=2)
 
-                if args.save_sample_prompt is not None:
-                    pipeline = pipeline.to(accelerator.device)
-                    g_cuda = torch.Generator(device=accelerator.device).manual_seed(args.seed)
-                    pipeline.set_progress_bar_config(disable=True)
-                    sample_dir = os.path.join(save_dir, "samples")
-                    os.makedirs(sample_dir, exist_ok=True)
-                    with torch.autocast("cuda"), torch.inference_mode():
-                        for i in tqdm(range(args.n_save_sample), desc="Generating samples"):
-                            images = pipeline(
-                                args.save_sample_prompt,
-                                negative_prompt=args.save_sample_negative_prompt,
-                                guidance_scale=args.save_guidance_scale,
-                                num_inference_steps=args.save_infer_steps,
-                                generator=g_cuda
-                            ).images
-                            images[0].save(os.path.join(sample_dir, f"{i}.png"))
-                    del pipeline
-                    if torch.cuda.is_available():
-                        torch.cuda.empty_cache()
+                # if args.save_sample_prompt is not None:
+                #     pipeline = pipeline.to(accelerator.device)
+                #     g_cuda = torch.Generator(device=accelerator.device).manual_seed(args.seed)
+                #     pipeline.set_progress_bar_config(disable=True)
+                #     sample_dir = os.path.join(save_dir, "samples")
+                #     os.makedirs(sample_dir, exist_ok=True)
+                #     with torch.autocast("cuda"), torch.inference_mode():
+                #         for i in tqdm(range(args.n_save_sample), desc="Generating samples"):
+                #             images = pipeline(
+                #                 args.save_sample_prompt,
+                #                 negative_prompt=args.save_sample_negative_prompt,
+                #                 guidance_scale=args.save_guidance_scale,
+                #                 num_inference_steps=args.save_infer_steps,
+                #                 generator=g_cuda
+                #             ).images
+                #             images[0].save(os.path.join(sample_dir, f"{i}.png"))
+                #     del pipeline
+                #     if torch.cuda.is_available():
+                #         torch.cuda.empty_cache()
                 print(f"[*] Weights saved at {save_dir}")
 
         # Only show the progress bar once on each machine.
