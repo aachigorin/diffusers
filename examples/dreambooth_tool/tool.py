@@ -282,8 +282,9 @@ def main(args):
         args.concepts_list = query['concepts']
         instance_prompt_md5 = '_'.join([hashlib.md5(concept['instance_prompt'].encode()).hexdigest()
                                         for concept in query['concepts']])
-        args.output_dir = Path(config['output_dir']) / instance_prompt_md5
-        args.output_dir.mkdir(parents=True, exist_ok=True)
+        output_dir = Path(config['output_dir']) / instance_prompt_md5
+        output_dir.mkdir(parents=True, exist_ok=True)
+        args.output_dir = str(output_dir)
         trainer.train(args)
 
         results_json = dict()
@@ -292,7 +293,7 @@ def main(args):
         for prompt in query['prompts']:
             results_json['prompt'] = prompt
             prompt_md5 = hashlib.md5(prompt.encode()).hexdigest()
-            cur_output_dir = args.output_dir / prompt_md5
+            cur_output_dir = output_dir / prompt_md5
             cur_output_dir.mkdir(parents=True, exist_ok=True)
             generator = DreamBoothGenerator(cur_output_dir)
             generator.generate(prompt, n_images=1)
