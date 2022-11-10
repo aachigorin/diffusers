@@ -3,7 +3,8 @@ export INSTANCE_DIR="/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/
 export CLASS_DIR="/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/data/images/dogs/"
 export OUTPUT_DIR="/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/data/saved_models/"
 
-accelerate launch /Users/aachigorin/work/code/diffusers/examples/dreambooth_tool/tool.py \
+CUDA_VISIBLE_DEVICES=$1 \
+accelerate launch /ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/tool.py \
   --pretrained_model_name_or_path=$MODEL_NAME \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
   --with_prior_preservation \
@@ -23,7 +24,7 @@ accelerate launch /Users/aachigorin/work/code/diffusers/examples/dreambooth_tool
   --sample_batch_size=1 \
   --max_train_steps=1 \
   --save_interval 200 \
-  --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/config0.json"
+  --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/config0_linux.json"
 
 
 
