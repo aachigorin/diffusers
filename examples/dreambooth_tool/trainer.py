@@ -57,11 +57,17 @@ class DreamBoothDataset(Dataset):
         self.class_images_path = []
 
         for concept in concepts_list:
-            inst_img_path = [(x, concept["instance_prompt"]) for x in Path(concept["instance_data_dir"]).iterdir() if x.is_file()]
+            inst_img_path = []
+            for ext in ['jpg', 'jpeg']:
+                inst_img_path += [(x, concept["instance_prompt"])
+                                  for x in Path(concept["instance_data_dir"]).glob(f"*.{ext}") if x.is_file()]
             self.instance_images_path.extend(inst_img_path)
 
             if with_prior_preservation:
-                class_img_path = [(x, concept["class_prompt"]) for x in Path(concept["class_data_dir"]).iterdir() if x.is_file()]
+                class_img_path = []
+                for ext in ['jpg', 'jpeg']:
+                    class_img_path += [(x, concept["class_prompt"])
+                                       for x in Path(concept["class_data_dir"]).glob(f"*.{ext}") if x.is_file()]
                 self.class_images_path.extend(class_img_path[:num_class_images])
 
         random.shuffle(self.instance_images_path)
@@ -211,7 +217,8 @@ class DeepBoothTrainer:
             for concept in args.concepts_list:
                 class_images_dir = Path(concept["class_data_dir"])
                 class_images_dir.mkdir(parents=True, exist_ok=True)
-                cur_class_images = len(list(class_images_dir.iterdir()))
+                #cur_class_images = len(list(class_images_dir.iterdir()))
+                cur_class_images = len(list(class_images_dir.glob('*.jpg')))
 
                 if cur_class_images < args.num_class_images:
                     torch_dtype = torch.float16 if accelerator.device.type == "cuda" else torch.float32

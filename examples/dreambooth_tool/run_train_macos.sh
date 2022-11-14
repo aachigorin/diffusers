@@ -9,7 +9,7 @@ accelerate launch /Users/aachigorin/work/code/diffusers/examples/dreambooth_tool
   --with_prior_preservation \
   --prior_loss_weight=1.0 \
   --seed 2410 \
-  --resolution=128 \
+  --resolution=512 \
   --train_batch_size=1 \
   --train_text_encoder \
   --gradient_accumulation_steps=1 \
@@ -21,9 +21,12 @@ accelerate launch /Users/aachigorin/work/code/diffusers/examples/dreambooth_tool
   --sample_batch_size=1 \
   --max_train_steps=1 \
   --save_interval 200 \
-  --config_path "/Users/aachigorin/work/code/diffusers/examples/dreambooth_tool/config0.json"
+  --config_path "/Users/aachigorin/work/code/diffusers/examples/dreambooth_tool/config0_macos.json" \
+  --num_inference_steps 1 \
+  --n_images_to_generate_for_each_prompt 1
 
 
+  # --skip_training_for_debug \
   # --use_8bit_adam \
   # --resolution=512 \
   # --mixed_precision="fp16" \

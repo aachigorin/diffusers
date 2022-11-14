@@ -210,7 +210,15 @@ def parse_args(input_args=None):
         default=None,
         help="Path to json containing multiple queries for dreambooth generation",
     )
-
+    parser.add_argument(
+        "--num_inference_steps", type=int, default=50, help="Number of step for generator"
+    )
+    parser.add_argument(
+        "--skip_training_for_debug", action='store_true', help="Skip training step to speed up debugging"
+    )
+    parser.add_argument(
+        "--n_images_to_generate_for_each_prompt", type=int, default=4, help=""
+    )
 
     if input_args is not None:
         args = parser.parse_args(input_args)
@@ -285,20 +293,23 @@ def main(args):
         output_dir = Path(config['output_dir']) / instance_prompt_md5
         output_dir.mkdir(parents=True, exist_ok=True)
         args.output_dir = str(output_dir)
-        trainer.train(args)
+        if not args.skip_training_for_debug:
+            trainer.train(args)
 
         results_json = dict()
         results_json['concepts'] = query['concepts']
         results_json['args'] = str(args)
+        model_dir = output_dir / str(args.max_train_steps)
         for prompt in query['prompts']:
             results_json['prompt'] = prompt
             prompt_md5 = hashlib.md5(prompt.encode()).hexdigest()
             cur_output_dir = output_dir / prompt_md5
             cur_output_dir.mkdir(parents=True, exist_ok=True)
-            generator = DreamBoothGenerator(cur_output_dir)
-            generator.generate(prompt, n_images=1)
-            with open(cur_output_dir / 'results.json') as f:
-                results_json.dump(f)
+            generator = DreamBoothGenerator(model_dir)
+            generator.generate(prompt, n_images=args.n_images_to_generate_for_each_prompt, save_dir=cur_output_dir,
+                               num_inference_steps=args.num_inference_steps)
+            with open(cur_output_dir / 'results.json', 'w+') as f:
+                json.dump(results_json, f)
 
 if __name__ == "__main__":
     args = parse_args()
