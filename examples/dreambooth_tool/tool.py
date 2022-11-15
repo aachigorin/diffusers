@@ -3,6 +3,8 @@ import json
 import os
 from pathlib import Path
 import hashlib
+import torch
+import copy
 
 from trainer import DeepBoothTrainer
 from generator import DreamBoothGenerator
@@ -214,7 +216,7 @@ def parse_args(input_args=None):
         "--num_inference_steps", type=int, default=50, help="Number of step for generator"
     )
     parser.add_argument(
-        "--skip_training_for_debug", action='store_true', help="Skip training step to speed up debugging"
+        "--skip_training", action='store_true', help="Skip training step to speed up debugging"
     )
     parser.add_argument(
         "--n_images_to_generate_for_each_prompt", type=int, default=4, help=""
@@ -232,8 +234,6 @@ def parse_args(input_args=None):
     return args
 
 def main(args):
-    trainer = DeepBoothTrainer()
-
     # parser.add_argument(
     #     "--instance_data_dir",
     #     type=str,
@@ -287,29 +287,42 @@ def main(args):
         config = json.load(f)
 
     for idx, query in enumerate(config["queries"]):
+        trainer = DeepBoothTrainer()
         args.concepts_list = query['concepts']
-        instance_prompt_md5 = '_'.join([hashlib.md5(concept['instance_prompt'].encode()).hexdigest()
-                                        for concept in query['concepts']])
-        output_dir = Path(config['output_dir']) / instance_prompt_md5
+        instance_prompts = '_'.join([concept['instance_prompt'] for concept in query['concepts']])
+                
+        str_args = argparse.Namespace(pretrained_model_name_or_path=args.pretrained_model_name_or_path,
+                                      pretrained_vae_name_or_path=args.pretrained_vae_name_or_path,
+                                      tokenizer_name=args.tokenizer_name,
+                                      with_prior_preservation=args.with_prior_preservation,
+                                      learning_rate=args.learning_rate
+                                     )
+        instance_prompt_args_md5 = hashlib.md5(instance_prompts.encode() + str(str_args).encode()).hexdigest()
+        
+        output_dir = Path(config['output_dir']) / instance_prompt_args_md5
         output_dir.mkdir(parents=True, exist_ok=True)
         args.output_dir = str(output_dir)
-        if not args.skip_training_for_debug:
+        if not args.skip_training:
             trainer.train(args)
+        del trainer
+        torch.cuda.empty_cache() # trying to release the memory as much as possible
 
         results_json = dict()
         results_json['concepts'] = query['concepts']
         results_json['args'] = str(args)
         model_dir = output_dir / str(args.max_train_steps)
+        generator = DreamBoothGenerator(model_dir)
         for prompt in query['prompts']:
             results_json['prompt'] = prompt
-            prompt_md5 = hashlib.md5(prompt.encode()).hexdigest()
+            prompt_md5 = 'prompt_' + hashlib.md5(prompt.encode()).hexdigest()
             cur_output_dir = output_dir / prompt_md5
-            cur_output_dir.mkdir(parents=True, exist_ok=True)
-            generator = DreamBoothGenerator(model_dir)
-            generator.generate(prompt, n_images=args.n_images_to_generate_for_each_prompt, save_dir=cur_output_dir,
-                               num_inference_steps=args.num_inference_steps)
+            cur_output_dir.mkdir(parents=True, exist_ok=True)            
+            generator.generate(prompt, n_images=args.n_images_to_generate_for_each_prompt,
+                               save_dir=cur_output_dir, num_inference_steps=args.num_inference_steps)
             with open(cur_output_dir / 'results.json', 'w+') as f:
                 json.dump(results_json, f)
+        del generator
+        torch.cuda.empty_cache() # trying to release the memory as much as possible
 
 if __name__ == "__main__":
     args = parse_args()

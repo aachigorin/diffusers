@@ -1,8 +1,8 @@
 export MODEL_NAME="runwayml/stable-diffusion-v1-5"
-export INSTANCE_DIR="/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/data/images/dog_0/"
-export CLASS_DIR="/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/data/images/dogs/"
-export OUTPUT_DIR="/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/data/saved_models/"
 
+# PROD
+# memory during training: 13649 gb during training (+ not_cache_latents, -train_text_encoder )
+# memory during training: ??? gb during training (+ not_cache_latents )
 CUDA_VISIBLE_DEVICES=$1 \
 accelerate launch /ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/tool.py \
   --pretrained_model_name_or_path=$MODEL_NAME \
@@ -10,27 +10,23 @@ accelerate launch /ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/too
   --with_prior_preservation \
   --prior_loss_weight=1.0 \
   --seed 2410 \
-  --use_8bit_adam \
   --resolution=512 \
-  --mixed_precision="fp16" \
   --train_batch_size=1 \
-  --train_text_encoder \
+  --not_cache_latents \
+  --use_8bit_adam \
   --gradient_accumulation_steps=1 \
   --gradient_checkpointing \
+  --train_text_encoder \
+  --mixed_precision="fp16" \
   --learning_rate=1e-6 \
   --lr_scheduler="constant" \
   --lr_warmup_steps=0 \
-  --num_class_images=1 \
-  --sample_batch_size=1 \
-  --max_train_steps=1 \
-  --save_interval 200 \
-  --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/config0_linux.json"
+  --num_class_images=50 \
+  --sample_batch_size=4 \
+  --max_train_steps=800 \
+  --save_interval 1000 \
+  --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/configs/config_linux0.json" \
+  --num_inference_steps 50 \
+  --n_images_to_generate_for_each_prompt 4
 
-
-
-  # --instance_data_dir=$INSTANCE_DIR \
-  #--class_data_dir=$CLASS_DIR \
-  #--output_dir=$OUTPUT_DIR \
-  #--save_sample_prompt="photo of sks dog" \
-  #--instance_prompt="a photo of sks dog" \
-  #--class_prompt="a photo of dog"
+# --skip_training

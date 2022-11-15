@@ -21,7 +21,7 @@ accelerate launch /Users/aachigorin/work/code/diffusers/examples/dreambooth_tool
   --sample_batch_size=1 \
   --max_train_steps=1 \
   --save_interval 200 \
-  --config_path "/Users/aachigorin/work/code/diffusers/examples/dreambooth_tool/config0_macos.json" \
+  --config_path "/Users/aachigorin/work/code/diffusers/examples/dreambooth_tool/configs/config0_macos.json" \
   --num_inference_steps 1 \
   --n_images_to_generate_for_each_prompt 1
 
