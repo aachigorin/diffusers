@@ -1,0 +1,18 @@
+{
+      "queries" : [
+          {
+              "concepts" : [
+                  {
+                      "instance_prompt": "photo of zwx person",
+                      "class_prompt": "photo of a person",
+                      "instance_data_dir": "/stor/a.chigorin/projects/dreambooth/data/instance0/",
+                      "class_data_dir": "/stor/a.chigorin/projects/dreambooth/data/instance0_class_imgs/"
+                  }
+              ],
+              "prompts": [
+                  "photo of zwx person in a blue cowboy hat"                 
+              ]
+          }
+      ],
+      "output_dir" : "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/data/output_dir_instance0/"
+  }
