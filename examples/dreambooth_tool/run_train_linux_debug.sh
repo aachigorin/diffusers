@@ -26,7 +26,7 @@ accelerate launch /ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/too
   --sample_batch_size=4 \
   --max_train_steps=1 \
   --save_interval 1000 \
-  --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/configs/config_linux0.json" \
+  --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/configs/config_linux_cola.json" \
   --num_inference_steps 1 \
   --n_images_to_generate_for_each_prompt 1
 

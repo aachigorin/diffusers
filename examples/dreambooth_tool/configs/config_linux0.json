@@ -3,16 +3,32 @@
           {
               "concepts" : [
                   {
-                      "instance_prompt": "photo of zwx person",
+                      "instance_prompt": "photo of ukj person",
                       "class_prompt": "photo of a person",
                       "instance_data_dir": "/stor/a.chigorin/projects/dreambooth/data/instance0/",
                       "class_data_dir": "/stor/a.chigorin/projects/dreambooth/data/instance0_class_imgs/"
                   }
               ],
               "prompts": [
-                  "photo of zwx person in a blue cowboy hat"                 
+                  "photo of ukj person in a blue cowboy hat",
+                  "photo of ukj person with iroquois hairstyle",
+                  "photo of ukj person with red hairs",
+                  "photo of ukj person full body portrait",
+                  "photo of ukj person widely smiling",
+                "photo of ukj person flying in space",
+                "photo of ukj person with a blossoming tree at the background",
+                "photo of ukj person playing on the flute",
+                "photo of ukj person wearing red sunglasses",
+                "photo of ukj person in the style of Picasso",
+                "photo of ukj person in the style of Dali",
+                "photo of ukj person in the style of van gogh",
+                "photo of ukj person with red jowls",
+                "photo of ukj person with a cat on his shoulder",
+                "photo of ukj person in female gender",
+                "photo of ukj person standing in front of the Kremlin",
+                "photo of ukj person standing in front of the Eiffel tower"
               ]
           }
       ],
-      "output_dir" : "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/data/output_dir_instance0/"
+      "output_dir" : "/stor/a.chigorin/projects/dreambooth/data/output_dir_instance0/"
   }

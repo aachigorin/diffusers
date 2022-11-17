@@ -27,5 +27,5 @@
               ]
           }
       ],
-      "output_dir" : "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/data/output_dir/"
+      "output_dir" : "/stor/a.chigorin/projects/dreambooth/data/output_dir/"
   }

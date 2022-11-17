@@ -1,0 +1,34 @@
+{
+      "queries" : [
+          {
+              "concepts" : [
+                  {
+                      "instance_prompt": "photo of ukj person",
+                      "class_prompt": "photo of a person",
+                      "instance_data_dir": "/stor/a.chigorin/projects/dreambooth/data/instance_arina/",
+                      "class_data_dir": "/stor/a.chigorin/projects/dreambooth/data/instance_arina_class_imgs/"
+                  }
+              ],
+              "prompts": [
+                  "photo of a ukj person",
+                  "photo of a ukj person in thailand",
+                  "photo of a ukj person with eiffel tower at the background",
+                  "photo of a ukj person with a bottle of coca cola",
+                  "photo of a ukj person with red hairs",
+                  "photo of a ukj person with red hairs, picasso style, smiling",
+                  "photo of a ukj person with red hairs, dali style, smiling",
+                  "photo of a ukj person with red hairs, kandinsky style, smiling",
+                  "photo of a ukj person with curly hairs",
+                  "photo of a ukj person as anime character",
+                  "photo of a ukj person simulated character",
+                  "photo of a ukj person with a robot head",
+                  "photo of a ukj person in cosmonaut's helmet",
+                  "photo of a ukj person in cosmonaut's helmet flying in space",
+                  "photo of a ukj person in cosmonaut's helmet riding a horse",
+                  "photo of a ukj person with mountains in the background, high resolution, a lot of detailes, 4k, natural, beautiful",
+                  "photo of a ukj person standing on a rock in a river with mountains in the background, high resolution, a lot of detailes, 4k, natural, beautiful"
+              ]
+          }
+      ],
+      "output_dir" : "/stor/a.chigorin/projects/dreambooth/data/output_dir_instance_arina/"
+  }
