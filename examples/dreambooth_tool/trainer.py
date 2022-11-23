@@ -177,6 +177,7 @@ class DeepBoothTrainer:
         pass
 
     def train(self, args):
+        Path(args.output_dir).mkdir(parents=True, exist_ok=True)
         logging_dir = Path(args.output_dir, "0", args.logging_dir)
 
         accelerator = Accelerator(

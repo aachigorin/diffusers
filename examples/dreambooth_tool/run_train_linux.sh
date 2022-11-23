@@ -5,7 +5,8 @@ export MODEL_NAME="runwayml/stable-diffusion-v1-5"
 # memory during training: ??? gb during training (+ not_cache_latents )
 # baseline
 CUDA_VISIBLE_DEVICES=$1 \
-accelerate launch /ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/tool.py \
+accelerate launch --main_process_port 2412 \
+  /ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/tool.py \
   --pretrained_model_name_or_path=$MODEL_NAME \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
   --with_prior_preservation \
@@ -25,13 +26,16 @@ accelerate launch /ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/too
   --sample_batch_size=4 \
   --max_train_steps=800 \
   --save_interval 1000 \
-  --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/configs/config_linux_arina.json" \
+  --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/configs/config_linux_pepsi.json" \
   --num_inference_steps 50 \
-  --n_images_to_generate_for_each_prompt 4 \
-  --skip_training
+  --n_images_to_generate_for_each_prompt 4
 
 # --num_inference_steps 50 \
 # --n_images_to_generate_for_each_prompt 4 \
 # --max_train_steps=800 \
 #   --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/configs/config_linux0.json" \
+#   --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/configs/config_linux_me.json" \
+#   --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/configs/config_linux_mani.json" \
+#   --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/configs/config_linux_max_friend.json" \
+#   --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/configs/config_linux_max.json" \ 
 #  --skip_training
