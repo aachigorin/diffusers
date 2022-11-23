@@ -234,55 +234,6 @@ def parse_args(input_args=None):
     return args
 
 def main(args):
-    # parser.add_argument(
-    #     "--instance_data_dir",
-    #     type=str,
-    #     default=None,
-    #     help="A folder containing the training data of instance images.",
-    # )
-    # parser.add_argument(
-    #     "--class_data_dir",
-    #     type=str,
-    #     default=None,
-    #     help="A folder containing the training data of class images.",
-    # )
-    # parser.add_argument(
-    #     "--instance_prompt",
-    #     type=str,
-    #     default=None,
-    #     help="The prompt with identifier specifying the instance",
-    # )
-    # parser.add_argument(
-    #     "--class_prompt",
-    #     type=str,
-    #     default=None,
-    #     help="The prompt to specify images in the same class as provided instance images.",
-    # )
-    # parser.add_argument(
-    #     "--output_dir",
-    #     type=str,
-    #     default="text-inversion-model",
-    #     help="The output directory where the model predictions and checkpoints will be written.",
-    # )
-    # parser.add_argument(
-    #     "--concepts_list",
-    #     type=str,
-    #     default=None,
-    #     help="Path to json containing multiple concepts, will overwrite parameters like instance_prompt, class_prompt, etc.",
-    # )
-    # parser.add_argument(
-    #     "--save_sample_prompt",
-    #     type=str,
-    #     default=None,
-    #     help="The prompt used to generate sample outputs to save.",
-    # )
-    # parser.add_argument(
-    #     "--save_sample_negative_prompt",
-    #     type=str,
-    #     default=None,
-    #     help="The negative prompt used to generate sample outputs to save.",
-    # )
-
     with open(args.config_path) as f:
         config = json.load(f)
 
