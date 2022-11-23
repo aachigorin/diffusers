@@ -283,8 +283,10 @@ def main(args):
                 json.dump(local_results_json, f)
 
         global_results_json['queries'].append(query_copy)
-        with open(Path(config['output_dir']) / 'results.json', 'w+') as f:
+        out_json_path = str(Path(config['output_dir']) / 'results.json')
+        with open(out_json_path, 'w+') as f:
             json.dump(global_results_json, f)
+            print(f'Output results saved into {out_json_path}')
 
         del generator
         torch.cuda.empty_cache() # trying to release the memory as much as possible
