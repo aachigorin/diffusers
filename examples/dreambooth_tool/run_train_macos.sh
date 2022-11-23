@@ -23,10 +23,11 @@ accelerate launch /Users/aachigorin/work/code/diffusers/examples/dreambooth_tool
   --save_interval 200 \
   --config_path "/Users/aachigorin/work/code/diffusers/examples/dreambooth_tool/configs/config0_macos.json" \
   --num_inference_steps 1 \
-  --n_images_to_generate_for_each_prompt 1
+  --n_images_to_generate_for_each_prompt 1 \
+  --skip_training
 
 
-  # --skip_training_for_debug \
+  # --skip_training \
   # --use_8bit_adam \
   # --resolution=512 \
   # --mixed_precision="fp16" \
