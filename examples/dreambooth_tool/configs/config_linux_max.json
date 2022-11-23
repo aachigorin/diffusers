@@ -5,8 +5,8 @@
                   {
                       "instance_prompt": "photo of ukj person",
                       "class_prompt": "photo of a person",
-                      "instance_data_dir": "/stor/a.chigorin/projects/dreambooth/data/instance_arina/",
-                      "class_data_dir": "/stor/a.chigorin/projects/dreambooth/data/instance_arina_class_imgs/"
+                      "instance_data_dir": "/stor/a.chigorin/projects/dreambooth/data/max/512/",
+                      "class_data_dir": "/stor/a.chigorin/projects/dreambooth/data/instance_max_class_imgs/"
                   }
               ],
               "prompts": [
@@ -35,5 +35,5 @@
               ]
           }
       ],
-      "output_dir" : "/stor/a.chigorin/projects/dreambooth/data/output_dir_instance_arina/"
+      "output_dir" : "/stor/a.chigorin/projects/dreambooth/data/output_dir_instance_max/"
   }
