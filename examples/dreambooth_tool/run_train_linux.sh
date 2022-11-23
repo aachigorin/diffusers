@@ -26,7 +26,7 @@ accelerate launch --main_process_port 2412 \
   --sample_batch_size=4 \
   --max_train_steps=800 \
   --save_interval 1000 \
-  --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/configs/config_linux_pepsi.json" \
+  --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/configs/config_linux_mix0.json" \
   --num_inference_steps 50 \
   --n_images_to_generate_for_each_prompt 4
 

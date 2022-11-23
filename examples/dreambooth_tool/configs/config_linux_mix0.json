@@ -1,0 +1,33 @@
+{
+      "queries" : [
+          {
+              "concepts" : [
+                  {
+                      "instance_prompt": "photo of ukj person",
+                      "class_prompt": "photo of a person",
+                      "instance_data_dir": "/stor/a.chigorin/projects/dreambooth/data/me/512/",
+                      "class_data_dir": "/stor/a.chigorin/projects/dreambooth/data/instance_me_class_imgs/"
+                  }
+              ],
+              "prompts": [                                                    
+                  "portrait of ukj person painted by Butcher Billy",
+                  "Portrait of ukj person by Chantal Joffe, abstract oil painting, anatomically correct, beautiful perfect face, large brushstrokes, sharp focus, highly detailed"
+              ]
+          },
+          {
+              "concepts" : [
+                  {
+                      "instance_prompt": "photo of ukj person",
+                      "class_prompt": "photo of a person",
+                      "instance_data_dir": "/stor/a.chigorin/projects/dreambooth/data/instance_arina/",
+                      "class_data_dir": "/stor/a.chigorin/projects/dreambooth/data/instance_arina_class_imgs/"
+                  }
+              ],
+              "prompts": [
+                  "portreit of ukj person painted by Butcher Billy",
+                  "Portrait of ukj person by Chantal Joffe, abstract oil painting, anatomically correct, beautiful perfect face, large brushstrokes, sharp focus, highly detailed"                 
+              ]
+          }
+      ],
+      "output_dir" : "/stor/a.chigorin/projects/dreambooth/data/output_dir_mix0/"
+}
