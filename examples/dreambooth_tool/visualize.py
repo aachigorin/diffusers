@@ -38,13 +38,13 @@ def parse_args(input_args=None):
         args.html_path = str(Path(args.results_path).parents[0] / 'visualization.html')
     return args
 
-def table_with_images(img_paths, n_cols=4, w=200, h=200, n_max=8):
+def table_with_images(img_paths, n_cols=4, w=200, h=200, n_max=-1):
     with table():
         for idx, path in enumerate(img_paths):
-            if idx >= n_max:
+            if n_max > 0 and idx >= n_max:
                 break
             if idx % n_cols == 0:
-                row = tr()
+                tr()
             #row += td(img(src=path, width=w, height=h))
             image = cv2.imread(str(path))
             td(img(src=f"data:image/jpeg;base64,{image_to_base64(image)}", width=w, height=h))
