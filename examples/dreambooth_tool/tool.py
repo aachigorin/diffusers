@@ -286,10 +286,6 @@ def main(args):
     with open(args.config_path) as f:
         config = json.load(f)
 
-    global_results_json = {
-        'output_dir': config['output_dir'],
-        'queries': []
-    }
     for idx, query in enumerate(config["queries"]):
         trainer = DeepBoothTrainer()
         args.concepts_list = query['concepts']
@@ -301,8 +297,7 @@ def main(args):
                                       with_prior_preservation=args.with_prior_preservation,
                                       learning_rate=args.learning_rate
                                      )
-        instance_prompt_args_md5 = hashlib.md5(instance_prompts.encode()).hexdigest()
-        instance_prompt_args_md5 += '_' + hashlib.md5(str(str_args).encode()).hexdigest()
+        instance_prompt_args_md5 = hashlib.md5(instance_prompts.encode() + str(str_args).encode()).hexdigest()
         
         output_dir = Path(config['output_dir']) / instance_prompt_args_md5
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -312,29 +307,20 @@ def main(args):
         del trainer
         torch.cuda.empty_cache() # trying to release the memory as much as possible
 
-        global_results_json['args'] = str(args)
-        query_copy = copy.deepcopy(query)
-        query_copy['prompts_results'] = []
+        results_json = dict()
+        results_json['concepts'] = query['concepts']
+        results_json['args'] = str(args)
         model_dir = output_dir / str(args.max_train_steps)
         generator = DreamBoothGenerator(model_dir)
         for prompt in query['prompts']:
-            local_results_json = dict()
-            local_results_json['concepts'] = query['concepts']
-            local_results_json['args'] = str(args)
-            local_results_json['prompt'] = prompt
+            results_json['prompt'] = prompt
             prompt_md5 = 'prompt_' + hashlib.md5(prompt.encode()).hexdigest()
             cur_output_dir = output_dir / prompt_md5
-            query_copy['prompts_results'].append({'prompt': prompt, 'results_dir': str(cur_output_dir)})
             cur_output_dir.mkdir(parents=True, exist_ok=True)            
             generator.generate(prompt, n_images=args.n_images_to_generate_for_each_prompt,
                                save_dir=cur_output_dir, num_inference_steps=args.num_inference_steps)
             with open(cur_output_dir / 'results.json', 'w+') as f:
-                json.dump(local_results_json, f)
-
-        global_results_json['queries'].append(query_copy)
-        with open(Path(config['output_dir']) / 'results.json', 'w+') as f:
-            json.dump(global_results_json, f)
-
+                json.dump(results_json, f)
         del generator
         torch.cuda.empty_cache() # trying to release the memory as much as possible
 

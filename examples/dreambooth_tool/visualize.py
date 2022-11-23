@@ -1,5 +1,4 @@
-import dominate
-from dominate.tags import *
+from html4vision import Col, imagetable
 
 import argparse
 import json
@@ -8,90 +7,45 @@ from pathlib import Path
 def parse_args(input_args=None):
     parser = argparse.ArgumentParser(description="Simple example of a training script.")
     parser.add_argument(
-        "--results_path",
+        "--results_dir",
         type=str,
         default=None,
         required=True,
         help="Path to the directory with results.json files",
     )
     parser.add_argument(
-        "--n_cols",
+        "--max_num_results",
         type=int,
-        default=6
+        default=50,
+        help="Maximum number of resuling concepts visualizations (instances)",
     )
     parser.add_argument(
-        "--img_size",
+        "--max_num_prompts",
         type=int,
-        default=200
-    )
-    parser.add_argument(
-        "--html_path",
-        type=str,
-        default=None,
-        required=False,
-        help="Path to the html file with visualization results",
+        default=10,
+        help="Maximum number of prompts for one resulting instance",
     )
     args = parser.parse_args()
-    if args.html_path is None:
-        args.html_path = str(Path(args.results_path).parents[0] / 'visualization.html')
     return args
 
-def table_with_images(img_paths, n_cols=4, w=200, h=200, n_max=8):
-    with table():
-        for idx, path in enumerate(img_paths):
-            if idx >= n_max:
-                break
-            if idx % n_cols == 0:
-                row = tr()
-            row += td(img(src=path, width=w, height=h))
-
-def read_img_paths(dir_path):
-    img_paths = []
-    for ext in ['jpg', 'jpeg', 'png']:
-        img_paths += Path(dir_path).glob(f'*.{ext}')
-    return img_paths
 
 def main(args):
-    with open(args.results_path) as f:
-        results_json = json.load(f)
-    #output_dir = results_json['output_dir']
-    #results_paths = Path(output_dir).glob('**/results.json')
-
-    doc = dominate.document(title='')
-    with doc:
-        for query in results_json['queries']:
-            instance_images = []
-            class_images = []
-            instance_prompts = []
-            class_prompts = []
-            for concept in query['concepts']:
-                instance_images = read_img_paths(concept['instance_data_dir'])
-                class_images = read_img_paths(concept['class_data_dir'])
-                instance_prompts.append(concept['instance_prompt'])
-                class_prompts.append(concept['class_prompt'])
-
-            h2('Instance prompts:')
-            for prompt in instance_prompts:
-                p(prompt)
-            h2('Instance images:')
-            table_with_images(instance_images, n_cols=args.n_cols, w=args.img_size, h=args.img_size)
-
-            h2('Class prompts:')
-            for prompt in class_prompts:
-                p(prompt)
-            h2('Class images:')
-            table_with_images(class_images, n_cols=args.n_cols, w=args.img_size, h=args.img_size, n_max=12)
-
-            h2('Prompts results:')
-            for prompt_res in query['prompts_results']:
-                p(prompt_res["prompt"])
-                prompt_images = read_img_paths(prompt_res['results_dir'])
-                table_with_images(prompt_images, n_cols=args.n_cols, w=args.img_size, h=args.img_size, n_max=12)
-
-
-    with open(args.html_path, 'w+') as f:
-        f.write(str(doc))
-        print(f'Html is saved into {args.html_path}')
+    results_paths = Path(args.results_dir).glob('**/results.json')
+    for path in results_paths:
+        instance_prompts = []
+        class_prompts = []
+        instance_images_paths = []
+        class_images_paths = []
+        with open(path) as f:
+            r_json = json.load(f)
+        for concept in r_json['concepts']:
+            instance_prompts += concept['instance_prompt']
+            class_prompts += concept['class_prompt']
+            for ext in ['*.jpg', '*.jpeg']:
+                instance_images_paths += Path(concept['instance_data_dir']).glob(f'*.{ext}')
+                class_images_paths += Path(concept['class_data_dir']).glob(f'*.{ext}')
+        sample_images_paths = path.parent.glob('*.png')
+        prompt = r_json['prompt']
 
 
 if __name__ == "__main__":
