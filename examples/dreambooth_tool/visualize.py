@@ -4,6 +4,8 @@ from dominate.tags import *
 import argparse
 import json
 from pathlib import Path
+import base64
+import cv2
 
 def parse_args(input_args=None):
     parser = argparse.ArgumentParser(description="Simple example of a training script.")
@@ -43,13 +45,19 @@ def table_with_images(img_paths, n_cols=4, w=200, h=200, n_max=8):
                 break
             if idx % n_cols == 0:
                 row = tr()
-            row += td(img(src=path, width=w, height=h))
+            #row += td(img(src=path, width=w, height=h))
+            image = cv2.imread(str(path))
+            td(img(src=f"data:image/jpeg;base64,{image_to_base64(image)}", width=w, height=h))
+
 
 def read_img_paths(dir_path):
     img_paths = []
     for ext in ['jpg', 'jpeg', 'png']:
         img_paths += Path(dir_path).glob(f'*.{ext}')
     return img_paths
+
+def image_to_base64(image):
+    return base64.b64encode(cv2.imencode('.jpg', image)[1]).decode('utf-8')
 
 def main(args):
     with open(args.results_path) as f:
