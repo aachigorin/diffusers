@@ -1,11 +1,10 @@
-export MODEL_NAME="runwayml/stable-diffusion-v1-5"
+#export MODEL_NAME="runwayml/stable-diffusion-v1-5"
+export MODEL_NAME="CompVis/stable-diffusion-v1-4"
 
-# PROD
-# memory during training: 13649 gb during training (+ not_cache_latents, -train_text_encoder )
-# memory during training: ??? gb during training (+ not_cache_latents )
-# baseline
+# v4 model
+# 100 inference steps
 CUDA_VISIBLE_DEVICES=$1 \
-accelerate launch --main_process_port 2412 \
+accelerate launch --main_process_port 2419 \
   /ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/tool.py \
   --pretrained_model_name_or_path=$MODEL_NAME \
   --pretrained_vae_name_or_path="stabilityai/sd-vae-ft-mse" \
@@ -27,7 +26,7 @@ accelerate launch --main_process_port 2412 \
   --max_train_steps=800 \
   --save_interval 1000 \
   --config_path "/ssd/aachigorin/code/diffusers_my/examples/dreambooth_tool/configs/config_linux_mix0.json" \
-  --num_inference_steps 50 \
+  --num_inference_steps 100 \
   --n_images_to_generate_for_each_prompt 4
 
 # --num_inference_steps 50 \
