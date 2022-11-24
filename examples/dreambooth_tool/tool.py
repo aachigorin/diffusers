@@ -200,12 +200,6 @@ def parse_args(input_args=None):
     )
     parser.add_argument("--not_cache_latents", action="store_true", help="Do not precompute and cache latents from VAE.")
     parser.add_argument("--local_rank", type=int, default=-1, help="For distributed training: local_rank")
-    # parser.add_argument(
-    #     "--concepts_list",
-    #     type=str,
-    #     default=None,
-    #     help="Path to json containing multiple concepts, will overwrite parameters like instance_prompt, class_prompt, etc.",
-    # )
     parser.add_argument(
         "--config_path",
         type=str,
@@ -245,7 +239,6 @@ def main(args):
         trainer = DeepBoothTrainer()
         args.concepts_list = query['concepts']
         instance_prompts = '_'.join([concept['instance_prompt'] for concept in query['concepts']])
-                
         str_args = argparse.Namespace(pretrained_model_name_or_path=args.pretrained_model_name_or_path,
                                       pretrained_vae_name_or_path=args.pretrained_vae_name_or_path,
                                       tokenizer_name=args.tokenizer_name,

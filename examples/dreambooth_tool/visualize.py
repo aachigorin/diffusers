@@ -78,6 +78,9 @@ def main(args):
                 instance_prompts.append(concept['instance_prompt'])
                 class_prompts.append(concept['class_prompt'])
 
+            h2('Args:')
+            p(results_json['args'])
+
             h2('Instance prompts:')
             for prompt in instance_prompts:
                 p(prompt)
